@@ -1,4 +1,4 @@
-import { loginUser } from "../api.js";
+import { loginUser,regUser } from "../api.js";
 import { fetchTodosAndRender } from "../main.js";
 
 export function renderLoginComponent({appEl, setToken}) {
@@ -37,25 +37,55 @@ const renderForm = () =>{
 appEl.innerHTML = appHtml;
 
 document.getElementById("login-button").addEventListener("click", () => {
-const login = document.getElementById('login-input').value;
-const password = document.getElementById('password-input').value;
-if (!login){
-  alert('Введите логин');
-  return;
-}
-if (!password){
-  alert('Введите пароль');
-  return;
-}
-loginUser({
-  login: login,
-  password: password,
-}).then((user) => {
-  setToken(`Bearer ${user.user.token}`);
-  fetchTodosAndRender();
-}).catch(error =>{
-  alert(error.message)
-})
+  if (isLoginMode){
+    const login = document.getElementById('login-input').value;
+    const password = document.getElementById('password-input').value;
+    if (!login){
+      alert('Введите логин');
+      return;
+    }
+    if (!password){
+      alert('Введите пароль');
+      return;
+    }
+    loginUser({
+      login: login,
+      password: password,
+    }).then((user) => {
+      setToken(`Bearer ${user.user.token}`);
+      fetchTodosAndRender();
+    }).catch(error =>{
+      alert(error.message)
+    });
+  }else{
+    const login = document.getElementById('login-input').value;
+    const name = document.getElementById('name-input').value;
+    const password = document.getElementById('password-input').value;
+    if (!name){
+      alert('Введите имя');
+      return;
+    }
+    if (!login){
+      alert('Введите логин');
+      return;
+    }
+    if (!password){
+      alert('Введите пароль');
+      return;
+    }
+    regUser({
+      login: login,
+      password: password,
+      name: name,
+    }).then((user) => {
+      setToken(`Bearer ${user.user.token}`);
+      fetchTodosAndRender();
+    }).catch(error =>{
+      alert(error.message)
+    });
+  }
+
+
 });
 
 document.getElementById("toggle-button").addEventListener("click", () => {
