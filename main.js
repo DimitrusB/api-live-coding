@@ -1,7 +1,7 @@
 import { delTodos, getTodos, postTodos } from "./api.js";
 import { renderLoginComponent } from "./components/login-component.js";
 import { formatDateToRu, formatDateToUs } from "./lib/formatDate/formatDate.js"
-
+import { format } from "date-fns";
 
 let tasks = [];
 let token = "Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck";
@@ -29,13 +29,14 @@ export const fetchTodosAndRender = () => {
       const country = "ru"; 
       const tasksHtml = tasks
     .map((task) => {
+      const createDate = format(new Date(task.created_at), 'yyyy-MM-dd hh:mm');
       return `
       <li class="task">
         <p class="task-text">
           ${task.text} (Создал: ${task.user?.name ?? 'Неизвестно'})
           <button data-id="${task.id}" class="button delete-button">Удалить</button>
         </p>
-        <p><i>Задача создана: ${country === "ru" ? formatDateToRu(new Date(task.created_at)) : formatDateToUs(new Date(task.created_at))}</i></p>
+        <p><i>Задача создана: ${createDate}</i></p>
       </li>`;
     })
     .join("");
