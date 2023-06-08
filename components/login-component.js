@@ -76,7 +76,7 @@ document.getElementById("login-button").addEventListener("click", () => {
     regUser({
       login: login,
       password: password,
-      name: name,
+      name: _.capitalize(name)
     }).then((user) => {
       setToken(`Bearer ${user.user.token}`);
       fetchTodosAndRender();
